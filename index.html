@@ -860,7 +860,7 @@
           style="
             display: none;
             line-height: 1.9;
-            font-family: 'Lora', serif;
+            font-family: &quot;Lora&quot;, serif;
             font-size: 1.12rem;
             text-align: center;
             padding: 15px 10px;
@@ -1367,7 +1367,9 @@
       }
 
       // Initialize all cards in the bank initially (will be re-placed if saved state exists)
-      const cardElements = activities.map((act, index) => createActivityCard(act, index));
+      const cardElements = activities.map((act, index) =>
+        createActivityCard(act, index),
+      );
 
       function updateRemainingCount() {
         const left = bank.querySelectorAll(".activity-card").length;
@@ -1377,12 +1379,16 @@
       // Save tier placements whenever a card is moved
       function saveTierState() {
         const state = {
-          bank: Array.from(bank.querySelectorAll(".activity-card")).map(c => c.dataset.index),
-          tiers: {}
+          bank: Array.from(bank.querySelectorAll(".activity-card")).map(
+            (c) => c.dataset.index,
+          ),
+          tiers: {},
         };
-        tiers.forEach(tier => {
+        tiers.forEach((tier) => {
           const zone = tierZones[tier.name];
-          state.tiers[tier.name] = Array.from(zone.querySelectorAll(".activity-card")).map(c => c.dataset.index);
+          state.tiers[tier.name] = Array.from(
+            zone.querySelectorAll(".activity-card"),
+          ).map((c) => c.dataset.index);
         });
         localStorage.setItem("birthdayTierListState", JSON.stringify(state));
         updateRemainingCount();
@@ -1418,7 +1424,9 @@
       });
 
       // Also allow clicking/dropping back into the bank area
-      bank.addEventListener("dragover", (e) => { e.preventDefault(); });
+      bank.addEventListener("dragover", (e) => {
+        e.preventDefault();
+      });
       bank.addEventListener("drop", (e) => {
         e.preventDefault();
         if (draggedCard) {
@@ -1523,7 +1531,7 @@
             const state = JSON.parse(savedTierState);
             // Place bank items
             if (state.bank) {
-              state.bank.forEach(idx => {
+              state.bank.forEach((idx) => {
                 if (cardElements[idx]) bank.appendChild(cardElements[idx]);
               });
             }
@@ -1532,7 +1540,7 @@
               for (const tierName in state.tiers) {
                 const zone = tierZones[tierName];
                 if (zone) {
-                  state.tiers[tierName].forEach(idx => {
+                  state.tiers[tierName].forEach((idx) => {
                     if (cardElements[idx]) zone.appendChild(cardElements[idx]);
                   });
                 }
@@ -1540,11 +1548,11 @@
             }
           } catch (e) {
             // Fallback if parsing fails: put all cards in bank
-            cardElements.forEach(card => bank.appendChild(card));
+            cardElements.forEach((card) => bank.appendChild(card));
           }
         } else {
           // Default: put all cards in bank
-          cardElements.forEach(card => bank.appendChild(card));
+          cardElements.forEach((card) => bank.appendChild(card));
         }
 
         updateRemainingCount();
